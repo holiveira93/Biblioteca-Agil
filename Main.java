@@ -1,125 +1,121 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        int i, menu, escolha;
-        Livro livro[] = new Livro[10];
+        int i, menu;
+        boolean sair = false, existe = false;
+        ArrayList<Livro> livros = new ArrayList<>();
         Scanner scan = new Scanner(System.in);
+        
 
-        livro[0] = new Livro(1, "Como fazer sentido e bater o martelo",
-                "Alexandro Aolchique", "2017", "Disponivel", "");
+        livros.add(new Livro(1, "Como fazer sentido e bater o martelo",
+                "Alexandro Aolchique", "2017", "Disponivel", "-----"));
 
-        livro[1] = new Livro(2, "Sejamos todos feministas",
-                "Chimamanda Ngozi Adichie", "2015", "Disponivel", "");
-
-        livro[2] = new Livro(3, "Basquete 101",
-                "Hortência Marcari", "2017", "Disponivel", "");
+        livros.add(new Livro(2, "Sejamos todos feministas",
+                "Chimamanda Ngozi Adichie", "2015", "Disponivel", "-----"));
+        
+        livros.add(new Livro(3, "Basquete 101",
+                "Hortência Marcari", "2017", "Disponivel", "-----"));
         
         do {
             menu = 0;
-
             System.out.println("\nEscolha a opção: ");
-            System.out.println("1 - Retirar um livro\n2 - Devolver um livro\n3 - Doar um livro\n4 - Sair");
+            System.out.println("1 - Listar todos livros");
+            System.out.println("2 - Retirar um livro");
+            System.out.println("3 - Devolver um livro");
+            System.out.println("4 - Doar um livro");
+            System.out.println("5 - Sair");
+            System.out.printf(">> ");
             menu = scan.nextInt();
 
             switch (menu) {
                 case 1:
-                    System.out.println("Livros:");
-                    for (i = 0; i != 10; i++) {
-                        if (livro[i] != null) {
-                            System.out.println("\nNumero: " + livro[i].getNumero());
-                            System.out.println("Titulo: " + livro[i].getTitulo());
-                        }
+                    System.out.println("\n----------Livros----------");
+                    for (i = 0; i < livros.size(); i++) {
+                        livros.get(i).info();
+                        System.out.println("-------------------------------");
                     }
-
-                    System.out.println("\nEscolha o numero do livro a ser retirado: ");
-                    escolha = scan.nextInt();
-
-                    for (i = 0; i != 10; i++) {
-                        if (livro[i].getNumero() == escolha) {
-                            System.out.println("\nNumero: " + livro[i].getNumero());
-                            System.out.println("Titulo: " + livro[i].getTitulo());
-                            System.out.println("Autor: " + livro[i].getAutor());
-                            System.out.println("Ano: " + livro[i].getAno());
-                            System.out.println("Status: " + livro[i].getStatus());
-                            System.out.println("Esprestado para: " + livro[i].getEmprestado_para());
-
-                            if (livro[i].getStatus() == "Disponivel") {
-                                scan.nextLine();
-                                System.out.println("\nDigite o nome de quem irá retirar");
-                                livro[i].setEmprestado_para(scan.nextLine());
-
-                                System.out.println("\nLivro retirado com sucesso");
-                                livro[i].setStatus("Indisponivel");
-                            } else {
-                                System.out.println("\nLivro Indisponivel para retirada");
-                            }
-                            break;
-                        }
-                    }
-                    break;
+                break;
 
                 case 2:
-                    System.out.println("Informe o numero do livro a ser devolvido: ");
-                    escolha = scan.nextInt();
+                    existe = false;
+                    System.out.println("\nDigite o numero do livro a ser retirado ou '0' para retornar: ");
+                    System.out.printf(">> ");
+                    int escolha = scan.nextInt();
+                    scan.nextLine();
+                    if(escolha == 0){
+                        break;
+                    }
 
-                    for (i = 0; i != 10; i++) {
-                        if (livro[i].getNumero() == escolha) {
-                            if (livro[i].getStatus() == "Indisponivel") {
-
-                                System.out.println("Livro devolvido com sucesso");
-                                livro[i].setStatus("Disponivel");
-                                livro[i].setEmprestado_para("");
-                            } else {
-                                System.out.println("Livro já estava disponivel para retirar");
-                            }
+                    for (i = 0; i < livros.size(); i++) {
+                        if (livros.get(i).getNumero() == escolha) {
+                            livros.get(i).info();
+                            livros.get(i).retirar();
+                            existe = true;
                             break;
                         }
                     }
-                    break;
+                    if(!existe){
+                        System.out.println("Este numero de livro não está cadastrado");
+                    }
+                break;
 
                 case 3:
-                    int numero;
+                    System.out.println("Informe o numero do livro a ser devolvido ou '0' para retornar: ");
+                    System.out.printf(">> ");
+                    escolha = scan.nextInt();
+
+                    if(escolha == 0){
+                        break;
+                    }
+
+                    for (i = 0; i < livros.size(); i++) {
+                        if (livros.get(i).getNumero() == escolha) {
+                            livros.get(i).info();
+                            livros.get(i).devolver();
+                            existe = true;
+                            break;
+                        }
+                    }
+                    if(!existe){
+                        System.out.println("Este numero de livro não está cadastrado");
+                    }
+                break;
+
+                case 4:
                     boolean igual = false;
 
                     System.out.println("cadastre as informações do novo livro: ");
                     System.out.println("\nNumero: ");
-                    numero = scan.nextInt();
+                    System.out.printf(">> ");
+                    int novoNumero = scan.nextInt();
+                    scan.nextLine();
 
-                    for (i = 0; i != 10; i++) {
-
-                        if (livro[i] != null) {
-                            if (numero == livro[i].getNumero()) {
-                                System.out.println("ERRO - Numero já possui cadastro");
-                                igual = true;
-                            }
+                    for (i = 0; i<livros.size(); i++) {
+                        if (novoNumero == livros.get(i).getNumero()) {
+                            System.out.println("ERRO - Numero já possui cadastro");
+                            igual = true;
+                            break;
                         }
                     }
-                    if (igual == false) {
-                        scan.nextLine();
-                        System.out.println("Titulo: ");
-                        String titulo = scan.nextLine();
-
-                        System.out.println("Autor: ");
-                        String autor = scan.nextLine();
-
-                        System.out.println("Ano: ");
-                        String ano = scan.next();
-                        
-                        for (i = 0; i != 10; i++) {
-                            if (livro[i] == null) {
-                                livro[i] = new Livro(numero, titulo, autor, ano, "Disponivel", "");
-
-                                System.out.println("\nLivro registrado com sucesso!");
-                                break;
-                            }
-                        }
+                    if (!igual) {
+                        livros.add(new Livro());
+                        livros.get(livros.size()-1).cadastrar(novoNumero);
                     }
                 break;
+
+                case 5:
+                    sair = true;
+                break;
+
+                default:
+                    System.out.println("\nOpção inválida, escolha novamente!");
+                break;
             }
-        } while (menu != 4);
+        } while (!sair);
         scan.close();
     }
 }

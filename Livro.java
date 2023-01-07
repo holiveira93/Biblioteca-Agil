@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Livro{
     
     private int numero = 0;
@@ -5,16 +7,74 @@ public class Livro{
     private String autor;
     private String ano;
     private String status;
-    private String emprestado_para;
+    private String emprestadoPara;
+    Scanner scan = new Scanner(System.in);
     
+    public Livro() {
+    }
+
     public Livro(int numero, String titulo, String autor, String ano,
-            String status, String emprestado_para){
+                String status, String emprestadoPara){
         this.numero = numero;
         this.titulo = titulo;
         this.autor = autor;
         this.ano = ano;
         this.status = status;
-        this.emprestado_para = emprestado_para; 
+        this.emprestadoPara = emprestadoPara; 
+    }
+
+    public void retirar() {
+        if (getStatus() == "Disponivel") {
+            System.out.println("\nDigite o nome de quem irá retirar: ");
+            System.out.printf(">> ");
+            setemprestadoPara(scan.nextLine());
+
+            System.out.println("\nLivro retirado com sucesso");
+            setStatus("Indisponivel");
+        } else {
+                System.out.println("\nLivro Indisponivel para retirada");
+        }    
+    }
+
+    public void devolver(){
+        if (getStatus() == "Indisponivel") {
+            System.out.println("Livro devolvido com sucesso");
+            setStatus("Disponivel");
+            setemprestadoPara("-----");
+        } else {
+            System.out.println("Livro já estava disponivel para retirar");
+        }
+    }
+    
+    public void cadastrar(int novoNumero) {
+        setNumero(novoNumero);
+
+        System.out.println("Titulo: ");
+        System.out.printf(">> ");
+        setTitulo(scan.nextLine());
+
+        System.out.println("Autor: ");
+        System.out.printf(">> ");
+        setAutor(scan.nextLine());
+
+        System.out.println("Ano: ");
+        System.out.printf(">> ");
+        setAno(scan.next());
+
+        setStatus("Disponivel");
+        setemprestadoPara("-----");
+        
+        System.out.println("\nLivro registrado com sucesso!");
+    }
+    
+
+    public void info() {
+        System.out.println("Numero: " + getNumero());
+        System.out.println("Titulo: " + getTitulo());
+        System.out.println("Autor: " + getAutor());
+        System.out.println("Ano: " + getAno());
+        System.out.println("Status: " + getStatus());
+        System.out.println("Esprestado para: " + getemprestadoPara());
     }
 
     public int getNumero() {
@@ -57,12 +117,12 @@ public class Livro{
         this.status = status;
     }
 
-    public String getEmprestado_para() {
-        return emprestado_para;
+    public String getemprestadoPara() {
+        return emprestadoPara;
     }
 
-    public void setEmprestado_para(String emprestado_para) {
-        this.emprestado_para = emprestado_para;
+    public void setemprestadoPara(String emprestadoPara) {
+        this.emprestadoPara = emprestadoPara;
     }
     
 }
